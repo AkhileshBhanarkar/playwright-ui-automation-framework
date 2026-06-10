@@ -2,9 +2,11 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master, develop]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master, develop]
+  schedule:
+    - cron: '0 8 * * *'
 
 jobs:
   test:
@@ -26,13 +28,131 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright Tests
+      - name: Run Playwright Tests (Smoke)
+        run: npx playwright test --grep @smoke
+        continue-on-error: true
+
+      - name: Run Playwright Tests (Regression)
+        run: npx playwright test --grep @regression
+        continue-on-error: true
+
+      - name: Run All Playwright Tests
         run: npx playwright test
+
+      - name: Generate Test Report
+        if: always()
+        run: npx playwright show-report &
 
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
-        if: ${{ always() }}
+        if: always()
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 30
+
+      - name: Parse test results
+        if: always()
+        id: test-results
+        run: |
+          if [ -f "test-results/results.json" ]; then
+            echo "results_available=true" >> $GITHUB_OUTPUT
+            PASS=$(jq '[.suites[]?.tests[]? | select(.status=="passed")] | length' test-results/results.json)
+            FAIL=$(jq '[.suites[]?.tests[]? | select(.status=="failed")] | length' test-results/results.json)
+            SKIP=$(jq '[.suites[]?.tests[]? | select(.status=="skipped")] | length' test-results/results.json)
+            echo "pass_count=$PASS" >> $GITHUB_OUTPUT
+            echo "fail_count=$FAIL" >> $GITHUB_OUTPUT
+            echo "skip_count=$SKIP" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Post Test Results Comment
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const resultsPath = 'test-results/results.json';
+            if (fs.existsSync(resultsPath)) {
+              const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+              const pass = results.stats?.expected || 0;
+              const fail = results.stats?.unexpected || 0;
+              const skip = results.stats?.skipped || 0;
+              const total = pass + fail + skip;
+
+              const comment = `## 🧪 Test Results
+
+              | Metric | Count |
+              |--------|-------|
+              | ✅ Passed | ${pass} |
+              | ❌ Failed | ${fail} |
+              | ⏭️ Skipped | ${skip} |
+              | 📊 Total | ${total} |
+
+              **Pass Rate:** ${total > 0 ? ((pass / total) * 100).toFixed(2) : 0}%`;
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+
+      - name: Slack Notification on Failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "❌ Playwright Tests Failed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Playwright Tests Failed* 🔴\nRepository: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nAuthor: ${{ github.actor }}"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Run"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
+
+      - name: Slack Notification on Success
+        if: success()
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "✅ Playwright Tests Passed",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Playwright Tests Passed* 🟢\nRepository: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nAuthor: ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
