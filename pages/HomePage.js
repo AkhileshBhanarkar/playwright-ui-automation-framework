@@ -1,44 +1,34 @@
-class HomePage{
+const { BasePage } = require('../pageObjects/BasePage');
 
-    constructor(page){
-        this.page = page;
-        // this.productTitles = page.locator("[data-test='inventory-item-name']");
-        // this.addToCartButton = page.locator("#add-to-cart-sauce-labs-backpack");
+class HomePage extends BasePage {
+  constructor(page) {
+    super(page);
+    this.productContainer = page.locator('.inventory_item');
+    this.cartLink = page.locator('[data-test="shopping-cart-link"]');
+    this.cartBadge = page.locator('.shopping_cart_badge');
+  }
 
-        this.productContainer = page.locator('.inventory_item');
-        this.cartLink = page.locator('[data-test="shopping-cart-link"]');
-        this.cartBadge = page.locator('.shopping_cart_badge');
-
+  async addProductToCart(productName) {
+    try {
+      const addButton = this.productContainer
+        .filter({ hasText: productName })
+        .locator('button[data-test^="add-to-cart"]');
+      await this.safeClick(addButton);
+    } catch (error) {
+      throw new Error(
+        `Failed to add product "${productName}" to cart: ${error.message}`
+      );
     }
+  }
 
-    // async selectProductAndClickOnCart(productName){
-    //     const productCount = await this.productTitles.count();
-    //     for(let i=0; i< productCount; i++){
-    //         const text = await this.productTitles.nth(i).textContent();
-    //         if (text.trim() === productName) {
-    //             await products.nth(i).this.addToCartButton.click();
-    //         break;
-    //     }
-    
-    //     }
-    // }
+  async openCart() {
+    await this.safeClick(this.cartLink);
+  }
 
-    // Add product by exact product name
-    async addProductToCart(productName) {
-    // filter by text and click add-to-cart button inside that container
-    await this.productContainer.filter({ hasText: productName }).locator('button[data-test^="add-to-cart"]').click();
-    }
-
-    async openCart() {
-        await this.cartLink.click();
-    }
-
-    async getCartBadgeCount() {
-        if (await this.cartBadge.count() === 0) 
-            return '0';
-        return (await this.cartBadge.textContent()).trim();
-    }
- 
+  async getCartBadgeCount() {
+    if ((await this.cartBadge.count()) === 0) return '0';
+    return await this.getText(this.cartBadge);
+  }
 }
 
 module.exports = { HomePage };

@@ -1,10 +1,14 @@
-class OrderHistoryPage {
-constructor(page) {
-this.page = page;
-this.backHomeBtn = page.locator('#back-to-products');
+const { BasePage } = require('../pageObjects/BasePage');
+
+class OrderHistoryPage extends BasePage {
+  constructor(page) {
+    super(page);
+    this.backHomeBtn = page.locator('#back-to-products');
+  }
+
+  async goBackHome() {
+    await this.safeClick(this.backHomeBtn);
+  }
 }
-async goBackHome() {
-await this.backHomeBtn.click();
-}
-}
-module.exports = {OrderHistoryPage};
+
+module.exports = { OrderHistoryPage };

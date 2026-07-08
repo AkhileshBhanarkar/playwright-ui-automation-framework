@@ -5,42 +5,62 @@ const { CheckoutPage } = require('../pages/CheckoutPage');
 const { OrdersPage } = require('../pages/OrdersPage');
 const { OrderHistoryPage } = require('../pages/OrderHistoryPage');
 
+/**
+ * Page Object Factory with Lazy Loading
+ * Initializes page objects only when they are first accessed
+ */
 class PageObject {
+  constructor(page) {
+    this.page = page;
+    this._loginPage = null;
+    this._homePage = null;
+    this._cartPage = null;
+    this._ordersPage = null;
+    this._checkoutPage = null;
+    this._orderHistoryPage = null;
+  }
 
-    constructor(page) {
-        this.page = page;
-        this.loginPage = new LoginPage(this.page);
-        this.homePage = new HomePage(this.page);
-        this.cartPage = new CartPage(this.page);
-        this.ordersPage = new OrdersPage(this.page);
-        this.checkoutPage = new CheckoutPage(this.page);
-        this.orderHistoryPage = new OrderHistoryPage(this.page);
+  getLoginPage() {
+    if (!this._loginPage) {
+      this._loginPage = new LoginPage(this.page);
     }
+    return this._loginPage;
+  }
 
-    getLoginPage() {
-        return this.loginPage;
+  getHomePage() {
+    if (!this._homePage) {
+      this._homePage = new HomePage(this.page);
     }
+    return this._homePage;
+  }
 
-    getHomePage() {
-        return this.homePage;
+  getCartPage() {
+    if (!this._cartPage) {
+      this._cartPage = new CartPage(this.page);
     }
+    return this._cartPage;
+  }
 
-    getCartPage() {
-        return this.cartPage;
+  getOrdersPage() {
+    if (!this._ordersPage) {
+      this._ordersPage = new OrdersPage(this.page);
     }
+    return this._ordersPage;
+  }
 
-    getOrdersPage() {
-        return this.ordersPage;
+  getCheckoutPage() {
+    if (!this._checkoutPage) {
+      this._checkoutPage = new CheckoutPage(this.page);
     }
+    return this._checkoutPage;
+  }
 
-    getCheckoutPage() {
-        return this.checkoutPage;
+  getOrderHistoryPage() {
+    if (!this._orderHistoryPage) {
+      this._orderHistoryPage = new OrderHistoryPage(this.page);
     }
-
-    getOrderHistoryPage() {
-        return this.orderHistoryPage;
-    }
-
+    return this._orderHistoryPage;
+  }
 }
 
 module.exports = { PageObject };

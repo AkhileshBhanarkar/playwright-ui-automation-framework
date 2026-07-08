@@ -7,7 +7,11 @@
     "test": "npx playwright test",
     "smoke": "npx playwright test --grep @smoke",
     "regression": "npx playwright test --grep @regression",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "playwright",
@@ -20,6 +24,9 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.56.1",
-    "@types/node": "^24.10.1"
+    "@types/node": "^24.10.1",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0"
   }
 }
