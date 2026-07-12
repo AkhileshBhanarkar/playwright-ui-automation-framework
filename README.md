@@ -4,6 +4,7 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+![CI](https://github.com/AkhileshBhanarkar/playwright-ui-automation-framework/actions/workflows/playwright.yml/badge.svg)
 
 A robust, scalable, and enterprise-ready UI automation framework built with [Playwright](https://playwright.dev/) using the **Page Object Model (POM)** design pattern. This framework is designed for reliable, maintainable, and cross-browser end-to-end web application testing.
 
@@ -26,12 +27,15 @@ A robust, scalable, and enterprise-ready UI automation framework built with [Pla
 
 ## 🛠 Tech Stack
 
-- Playwright
-- JavaScript (Node.js)
-- Page Object Model (POM)
-- GitHub Actions
-- ESLint
-- Prettier
+| Category | Technology |
+|----------|------------|
+| Automation | Playwright |
+| Language | JavaScript (ES6) |
+| Runtime | Node.js |
+| Design Pattern | Page Object Model (POM) |
+| CI/CD | GitHub Actions |
+| Code Quality | ESLint, Prettier |
+| Reporting | Playwright HTML Report |
 
 ---
 
@@ -121,22 +125,44 @@ playwright-ui-automation-framework
 │
 ├── .github/
 │   └── workflows/
-│
-├── pages/
-│
 ├── pageObjects/
-│
+├── pages/
 ├── tests/
-│
 ├── utils/
-│
-├── test-data/
-│
-├── playwright.config.js
-├── package.json
 ├── .env.example
-└── README.md
+├── .eslintrc.json
+├── .gitignore
+├── .prettierignore
+├── .prettierrc.json
+├── BEST_PRACTICES.md
+├── README.md
+├── SETUP.md
+├── package.json
+├── package-lock.json
+└── playwright.config.js
 ```
+
+---
+
+# Framework Architecture
+
+```text
+                Test Cases
+                     │
+                     ▼
+             Page Object Model
+                     │
+                     ▼
+                BasePage
+                     │
+                     ▼
+        Playwright Browser API
+                     │
+                     ▼
+               Web Application
+```
+
+The framework follows the **Page Object Model (POM)** design pattern. Test cases interact only with Page Objects, which encapsulate page-specific locators and actions. Shared browser interactions are centralized in the `BasePage`, improving maintainability, reusability, and reducing duplicate code.
 
 ---
 
@@ -232,21 +258,23 @@ Additional documentation is available below:
 
 ---
 
-# Future Improvements
+# Roadmap
 
-Planned enhancements include:
+Planned enhancements:
 
-- Allure Reporting
-- Docker Support
-- Azure DevOps Pipeline
-- API Testing Module
-- Visual Regression Testing
-- Mobile Browser Execution
+- ✅ Allure Reporting
+- ✅ Docker Support
+- ✅ Azure DevOps Pipeline
+- ✅ API Testing (Playwright API)
+- ✅ Visual Regression Testing
+- ✅ Mobile Browser Testing
+- ✅ Retry Analytics
+- ✅ Slack Notifications
 
 ---
 
 # Contributing
 
-Contributions are welcome.
+Contributions, suggestions, and bug reports are welcome.
 
-Feel free to open an Issue or submit a Pull Request.
+If you have ideas to improve the framework, feel free to open an Issue or submit a Pull Request.
