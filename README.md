@@ -3,8 +3,7 @@
 ![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
-![CI](https://github.com/AkhileshBhanarkar/playwright-ui-automation-framework/actions/workflows/playwright.yml/badge.svg)
+![Playwright Tests](https://img.shields.io/github/actions/workflow/status/AkhileshBhanarkar/playwright-ui-automation-framework/playwright.yml?branch=main&style=for-the-badge&label=Playwright%20Tests)
 
 A robust, scalable, and enterprise-ready UI automation framework built with [Playwright](https://playwright.dev/) using the **Page Object Model (POM)** design pattern. This framework is designed for reliable, maintainable, and cross-browser end-to-end web application testing.
 
