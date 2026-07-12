@@ -1,66 +1,252 @@
 # Playwright UI Automation Framework
 
-A robust, modular UI automation framework built with [Playwright](https://playwright.dev/) for end-to-end testing of web applications.
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
-## Features
-- Page Object Model (POM) structure for maintainable tests
-- Easy configuration and environment setup
-- Support for multiple browsers (Chromium, Firefox, WebKit)
-- Parallel test execution
-- Custom utilities and reusable components
-- Example test cases for quick onboarding
+A robust, scalable, and enterprise-ready UI automation framework built with [Playwright](https://playwright.dev/) using the **Page Object Model (POM)** design pattern. This framework is designed for reliable, maintainable, and cross-browser end-to-end web application testing.
 
-## Getting Started
+---
 
-### Prerequisites
-- Node.js (v14+ recommended)
-- npm or yarn
+## 🚀 Features
 
-### Installation
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/AkhileshBhanarkar/playwright-ui-automation-framework.git
-   cd playwright-ui-automation-framework
-   ```
-2. Install dependencies:
-   ```sh
-   npm install
-   # or
-   yarn install
-   ```
+- ✅ Page Object Model (POM) architecture
+- ✅ Cross-browser testing (Chromium, Firefox, WebKit)
+- ✅ Parallel test execution
+- ✅ Environment configuration using `.env`
+- ✅ BasePage with reusable interaction methods
+- ✅ Custom utilities and helper classes
+- ✅ Logging support for debugging
+- ✅ ESLint & Prettier integration
+- ✅ GitHub Actions CI/CD support
+- ✅ Modular and scalable project structure
 
-### Running Tests
-- To run all tests:
-  ```sh
-  npx playwright test
-  ```
-- To run a specific test file:
-  ```sh
-  npx playwright test tests/<your-test-file>.spec.js
-  ```
-- For headed mode (see the browser):
-  ```sh
-  npx playwright test --headed
-  ```
+---
 
-### Project Structure
-- `pages/` - Page Object Model classes
-- `tests/` - Test cases
-- `utils/` - Utility functions and helpers
-- `playwright.config.js` - Playwright configuration
+## 🛠 Tech Stack
 
-### Best Practices
-- Use the POM classes in `pages/` for all page interactions
-- Keep test data and selectors organized
-- Leverage Playwright's built-in fixtures and hooks
+- Playwright
+- JavaScript (Node.js)
+- Page Object Model (POM)
+- GitHub Actions
+- ESLint
+- Prettier
 
-## Documentation
-- See [BEST_PRACTICES.md](BEST_PRACTICES.md) for tips
-- See [SETUP.md](SETUP.md) for environment setup
-- See [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) for implementation details
+---
 
-## Contributing
-Contributions are welcome! Please open issues or submit pull requests for improvements.
+# Getting Started
 
-## License
-MIT License
+## Prerequisites
+
+- Node.js 18+
+- npm
+
+## Installation
+
+Clone the repository
+
+```sh
+git clone https://github.com/AkhileshBhanarkar/playwright-ui-automation-framework.git
+cd playwright-ui-automation-framework
+```
+
+Install dependencies
+
+```sh
+npm install
+```
+
+Install Playwright browsers
+
+```sh
+npx playwright install --with-deps
+```
+
+(Optional) Create your environment file
+
+```sh
+cp .env.example .env
+```
+
+Update the required values inside `.env`.
+
+---
+
+# Running Tests
+
+Run all tests
+
+```sh
+npx playwright test
+```
+
+Run a specific test
+
+```sh
+npx playwright test tests/LoginPageTest.spec.js
+```
+
+Run in headed mode
+
+```sh
+npx playwright test --headed```
+
+Run on a specific browser
+
+```sh
+npx playwright test --project=chrome
+npx playwright test --project=firefox
+npx playwright test --project=webkit
+```
+
+Run Smoke tests
+
+```sh
+npx playwright test --grep "@Smoke"
+```
+
+View HTML Report
+
+```sh
+npx playwright show-report
+```
+
+---
+
+# Framework Structure
+
+```
+playwright-ui-automation-framework
+│
+├── .github/
+│   └── workflows/
+│
+├── pages/
+│
+├── pageObjects/
+│
+├── tests/
+│
+├── utils/
+│
+├── test-data/
+│
+├── playwright.config.js
+├── package.json
+├── .env.example
+└── README.md
+```
+
+---
+
+# Framework Highlights
+
+### BasePage
+
+Provides reusable methods like
+
+- Safe Click
+- Safe Fill
+- Wait Utilities
+- Navigation Helpers
+- Visibility Checks
+
+which minimize flaky tests and improve maintainability.
+
+---
+
+### Page Object Model
+
+Each page contains:
+
+- Locators
+- Page Actions
+- Business Methods
+
+keeping tests clean and reusable.
+
+---
+
+### Logging
+
+The framework includes centralized logging to simplify debugging during local execution and CI runs.
+
+---
+
+### Code Quality
+
+Integrated with
+
+- ESLint
+- Prettier
+
+to maintain consistent code quality and formatting.
+
+---
+
+### CI/CD
+
+Supports GitHub Actions for
+
+- Automated test execution
+- Cross-browser execution
+- Playwright HTML Reports
+- Artifact upload
+
+---
+
+# Best Practices
+
+- Keep business logic inside Page Objects.
+- Keep assertions inside test files.
+- Avoid hardcoded waits.
+- Prefer Playwright locators over XPath whenever possible.
+- Store reusable values inside utility classes or constants.
+- Keep tests independent and reusable.
+
+---
+
+# Creating a New Test
+
+Create a new `.spec.js` file inside the `tests` folder.
+
+Example:
+
+```
+tests/
+    LoginPageTest.spec.js
+    CheckoutTest.spec.js
+```
+
+Follow the same structure used in the existing test files.
+
+---
+
+# Documentation
+
+Additional documentation is available below:
+
+- 📘 **SETUP.md** — Installation & environment configuration
+- 📘 **BEST_PRACTICES.md** — Framework best practices and coding guidelines
+
+---
+
+# Future Improvements
+
+Planned enhancements include:
+
+- Allure Reporting
+- Docker Support
+- Azure DevOps Pipeline
+- API Testing Module
+- Visual Regression Testing
+- Mobile Browser Execution
+
+---
+
+# Contributing
+
+Contributions are welcome.
+
+Feel free to open an Issue or submit a Pull Request.

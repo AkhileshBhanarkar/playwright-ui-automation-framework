@@ -17,7 +17,7 @@ class LoginPage extends BasePage {
     try {
       await this.safeFill(this.usernameInput, username);
       await this.safeFill(this.passwordInput, password);
-      await this.waitForNavigation(() => this.safeClick(this.loginButton));
+      await this.safeClick(this.loginButton);
     } catch (error) {
       throw new Error(`Login failed: ${error.message}`);
     }
