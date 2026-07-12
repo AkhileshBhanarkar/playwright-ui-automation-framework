@@ -2,6 +2,8 @@
  * Base Page Object class with common methods and wait strategies
  * All page objects should extend this class
  */
+const { URLS } = require('../utils/Constants');
+
 class BasePage {
   constructor(page) {
     this.page = page;
@@ -13,10 +15,16 @@ class BasePage {
    * @param {string} url - Full URL or path
    */
   async goto(url) {
+    const targetUrl = url || process.env.BASE_URL || URLS.BASE || URLS.LOGIN;
+
+    if (!targetUrl || typeof targetUrl !== 'string') {
+      throw new Error('Navigation URL is not configured. Set BASE_URL or provide a URL.');
+    }
+
     try {
-      await this.page.goto(url, { waitUntil: 'networkidle' });
+      await this.page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
     } catch (error) {
-      throw new Error(`Failed to navigate to ${url}: ${error.message}`);
+      throw new Error(`Failed to navigate to ${targetUrl}: ${error.message}`);
     }
   }
 
@@ -95,7 +103,7 @@ class BasePage {
   async waitForNavigation(action) {
     try {
       await Promise.all([
-        this.page.waitForNavigation({ waitUntil: 'networkidle' }),
+        this.page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 }),
         action(),
       ]);
     } catch (error) {

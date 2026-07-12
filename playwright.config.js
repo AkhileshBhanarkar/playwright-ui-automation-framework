@@ -14,6 +14,7 @@ const config = ({
     ['junit', { outputFile: 'test-results/junit.xml' }],
   ],
   use: {
+    baseURL: process.env.BASE_URL || 'https://www.saucedemo.com/',
     headless: process.env.HEADLESS === 'true',
     launchOptions: {
       args: ['--no-sandbox', '--disable-setuid-sandbox'],

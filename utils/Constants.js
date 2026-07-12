@@ -88,7 +88,7 @@ const PRODUCTS = {
 };
 
 const WAIT_CONDITIONS = {
-  PAGE_LOAD: 'networkidle',
+  PAGE_LOAD: 'domcontentloaded',
   DOM_READY: 'domcontentloaded',
   LOAD_EVENT: 'load',
 };
